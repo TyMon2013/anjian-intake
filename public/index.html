@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta
+      name="description"
+      content="安笺投保信息采集：填写客户身份、联系方式与企业单位信息。"
+    />
+    <title>投保信息采集 · 安笺</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/client.css" />
+    <script type="module" src="/js/client.js"></script>
+  </head>
+  <body class="intake-page">
+    <a class="skip-link" href="#intake-form">跳到表单</a>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/" aria-label="安笺首页">
+          <span class="brand-mark" aria-hidden="true">安</span>
+          <span class="brand-name">安笺</span>
+        </a>
+        <div class="header-meta">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M7 10V7a5 5 0 0 1 10 0v3M5.5 10h13v9.5h-13z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M12 13.5v2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <span>资料加密传输</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-shell">
+      <div class="page-heading">
+        <h1 id="form-title">投保信息采集</h1>
+        <p>请填写客户身份、联系方式与企业单位信息。带 <span class="required">*</span> 的项目为必填项。</p>
+      </div>
+
+      <section class="paper-panel" aria-labelledby="form-title">
+        <div class="form-toolbar">
+          <ol class="step-rail" aria-label="填写进度">
+            <li class="step-item is-active" data-step-nav="1" aria-current="step">
+              <span class="step-number">1</span>
+              <span class="step-title">上传证件</span>
+            </li>
+            <li class="step-item" data-step-nav="2">
+              <span class="step-number">2</span>
+              <span class="step-title">核对信息</span>
+            </li>
+            <li class="step-item" data-step-nav="3">
+              <span class="step-number">3</span>
+              <span class="step-title">联系方式</span>
+            </li>
+          </ol>
+          <span class="status-chip">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="folio-stamp-value">未提交</span>
+          </span>
+        </div>
+
+        <div class="form-alert" id="form-alert" role="alert" hidden></div>
+
+        <form id="intake-form" novalidate>
+          <div class="form-step" data-step-panel="1">
+            <div class="section-heading">
+              <h2>上传身份证照片</h2>
+              <p>上传清晰完整的证件照片，系统会自动读取信息，您可以在下一步逐项修改。</p>
+            </div>
+
+            <div class="recognition-consent-block">
+              <div class="recognition-consent-head">
+                <strong>识别授权 <span class="required">*</span></strong>
+                <button type="button" class="text-button js-open-privacy">查看授权说明</button>
+              </div>
+              <label class="checkbox-label" for="field-recognitionConsent">
+                <input id="field-recognitionConsent" name="recognitionConsent" type="checkbox" />
+                <span>我确认已取得证件本人的授权，并同意使用证件照片进行信息识别与填写。</span>
+              </label>
+              <p class="field-error" data-field-error="recognitionConsent"></p>
+            </div>
+
+            <div class="upload-grid">
+              <div class="upload-slot" data-side="front">
+                <button
+                  type="button"
+                  class="upload-card"
+                  data-upload="front"
+                  aria-describedby="front-help"
+                >
+                  <span class="upload-empty">
+                    <span class="upload-art" aria-hidden="true">
+                      <svg viewBox="0 0 164 104" fill="none">
+                        <rect x="1" y="1" width="162" height="102" rx="8" stroke="currentColor" stroke-width="1.4" />
+                        <circle cx="47" cy="43" r="15" stroke="currentColor" stroke-width="1.3" />
+                        <path d="M26 77c3-14 10.5-21 21-21s18 7 21 21" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        <path d="M84 31h58M84 45h48M84 59h55M84 73h33" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                      </svg>
+                    </span>
+                    <span class="upload-kicker">身份证正面</span>
+                    <span class="upload-title">人像面</span>
+                    <span class="upload-help" id="front-help">头像、姓名、身份证号码需清晰完整</span>
+                    <span class="upload-cta">选择或拍摄图片</span>
+                  </span>
+                  <span class="upload-preview" hidden>
+                    <img id="front-preview" alt="身份证正面照片预览" />
+                  </span>
+                  <span class="scan-layer" hidden aria-hidden="true">
+                    <span class="scan-spinner"></span>
+                    <span class="scan-caption">正在识别证件信息</span>
+                  </span>
+                  <span class="recognition-badge" hidden data-recognition-badge="front"></span>
+                </button>
+                <div class="upload-meta">
+                  <span class="upload-state" data-upload-state="front">未上传</span>
+                  <div class="upload-actions" data-upload-actions="front" hidden>
+                    <button type="button" data-replace="front">更换</button>
+                    <button type="button" data-remove="front">移除</button>
+                  </div>
+                </div>
+                <p class="field-error" data-side-error="front"></p>
+                <input
+                  class="visually-hidden"
+                  type="file"
+                  id="front-input"
+                  accept="image/*"
+                  tabindex="-1"
+                  aria-hidden="true"
+                />
+              </div>
+
+              <div class="upload-slot" data-side="back">
+                <button
+                  type="button"
+                  class="upload-card"
+                  data-upload="back"
+                  aria-describedby="back-help"
+                >
+                  <span class="upload-empty">
+                    <span class="upload-art" aria-hidden="true">
+                      <svg viewBox="0 0 164 104" fill="none">
+                        <rect x="1" y="1" width="162" height="102" rx="8" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M18 27h128M18 41h82M18 67h54M18 80h40" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                        <circle cx="122" cy="63" r="24" stroke="currentColor" stroke-width="1.3" />
+                        <path d="m122 51 3.4 7.8 8.5.8-6.4 5.7 1.8 8.3-7.3-4.4-7.3 4.4 1.8-8.3-6.4-5.7 8.5-.8z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" />
+                      </svg>
+                    </span>
+                    <span class="upload-kicker">身份证反面</span>
+                    <span class="upload-title">签发机关面</span>
+                    <span class="upload-help" id="back-help">签发机关与有效期限需清晰完整</span>
+                    <span class="upload-cta">选择或拍摄图片</span>
+                  </span>
+                  <span class="upload-preview" hidden>
+                    <img id="back-preview" alt="身份证反面照片预览" />
+                  </span>
+                  <span class="scan-layer" hidden aria-hidden="true">
+                    <span class="scan-spinner"></span>
+                    <span class="scan-caption">正在识别证件信息</span>
+                  </span>
+                  <span class="recognition-badge" hidden data-recognition-badge="back"></span>
+                </button>
+                <div class="upload-meta">
+                  <span class="upload-state" data-upload-state="back">未上传</span>
+                  <div class="upload-actions" data-upload-actions="back" hidden>
+                    <button type="button" data-replace="back">更换</button>
+                    <button type="button" data-remove="back">移除</button>
+                  </div>
+                </div>
+                <p class="field-error" data-side-error="back"></p>
+                <input
+                  class="visually-hidden"
+                  type="file"
+                  id="back-input"
+                  accept="image/*"
+                  tabindex="-1"
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+
+            <p class="form-note">请勿上传复印件、屏幕翻拍或遮挡证件关键信息的照片。自动识别结果仅用于辅助填写，请以证件原件为准。</p>
+          </div>
+
+          <div class="form-step" data-step-panel="2" hidden>
+            <div class="section-heading">
+              <h2>核对身份信息</h2>
+              <p>以下内容可手动修改，请对照身份证原件逐项核对。</p>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="field-name">姓名 <span class="required">*</span></label>
+                <input id="field-name" name="name" type="text" autocomplete="name" maxlength="30" placeholder="请输入证件姓名" />
+                <p class="field-error" data-field-error="name"></p>
+              </div>
+              <div class="field">
+                <label for="field-ethnicity">民族</label>
+                <input id="field-ethnicity" name="ethnicity" type="text" maxlength="20" placeholder="如：汉族" />
+                <p class="field-error" data-field-error="ethnicity"></p>
+              </div>
+              <div class="field field-full">
+                <label for="field-idNumber">身份证号码 <span class="required">*</span></label>
+                <input
+                  id="field-idNumber"
+                  name="idNumber"
+                  class="input-code"
+                  type="text"
+                  inputmode="text"
+                  autocomplete="off"
+                  maxlength="18"
+                  placeholder="18 位身份证号码"
+                  spellcheck="false"
+                />
+                <p class="field-hint">请逐位核对，确保与证件完全一致。</p>
+                <p class="field-error" data-field-error="idNumber"></p>
+              </div>
+            </div>
+
+            <div class="derived-strip" aria-live="polite">
+              <div class="derived-cell">
+                <span class="derived-label">性别</span>
+                <strong id="derived-sex">待核对</strong>
+              </div>
+              <div class="derived-cell">
+                <span class="derived-label">出生日期</span>
+                <strong id="derived-birth">待核对</strong>
+              </div>
+              <div class="derived-cell">
+                <span class="derived-label">年龄</span>
+                <strong id="derived-age">待计算</strong>
+              </div>
+              <span class="derived-note">根据身份证号码自动生成</span>
+            </div>
+
+            <div class="field-grid field-grid-spaced">
+              <div class="field">
+                <label for="field-nativePlace">籍贯 <span class="required">*</span></label>
+                <input id="field-nativePlace" name="nativePlace" type="text" maxlength="60" placeholder="如：浙江杭州" />
+                <p class="field-hint">身份证不包含籍贯，请手动填写。</p>
+                <p class="field-error" data-field-error="nativePlace"></p>
+              </div>
+              <div class="field">
+                <label for="field-issuingAuthority">签发机关 <span class="required">*</span></label>
+                <input id="field-issuingAuthority" name="issuingAuthority" type="text" maxlength="60" placeholder="如：北京市公安局朝阳分局" />
+                <p class="field-error" data-field-error="issuingAuthority"></p>
+              </div>
+              <div class="field field-full">
+                <label for="field-idAddress">身份证住址 <span class="required">*</span></label>
+                <input id="field-idAddress" name="idAddress" type="text" maxlength="200" placeholder="请填写证件上的完整住址" />
+                <p class="field-error" data-field-error="idAddress"></p>
+              </div>
+            </div>
+
+            <div class="validity-block">
+              <div>
+                <span class="field-label">证件有效期 <span class="required">*</span></span>
+                <p class="field-hint">请对照身份证背面的有效期限填写；长期有效请勾选。</p>
+              </div>
+              <div class="validity-controls validity-desktop">
+                <div class="date-pair">
+                  <div class="date-field">
+                    <label for="field-validFrom">起始日期</label>
+                    <input id="field-validFrom" name="validFrom" type="date" />
+                  </div>
+                  <div class="date-field" id="validTo-wrap">
+                    <label for="field-validTo">到期日期</label>
+                    <input id="field-validTo" name="validTo" type="date" />
+                  </div>
+                </div>
+                <label class="checkbox-label checkbox-inline" for="field-longTerm">
+                  <input id="field-longTerm" name="isLongTerm" type="checkbox" />
+                  <span>长期有效</span>
+                </label>
+              </div>
+              <div class="validity-mobile">
+                <div class="validity-mobile-value">
+                  <span>当前有效期</span>
+                  <strong id="validity-mobile-value">待填写</strong>
+                </div>
+                <button
+                  type="button"
+                  class="button button-secondary"
+                  id="edit-validity-btn"
+                  aria-label="修改证件有效期"
+                >
+                  修改
+                </button>
+              </div>
+              <p class="field-error" data-field-error="validFrom"></p>
+              <p class="field-error" data-field-error="validTo"></p>
+            </div>
+          </div>
+
+          <div class="form-step" data-step-panel="3" hidden>
+            <div class="section-heading">
+              <h2>联系方式与企业单位</h2>
+              <p>请填写本人实名手机号和企业单位信息。</p>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="field-phone">手机号 <span class="required">*</span></label>
+                <input
+                  id="field-phone"
+                  name="phone"
+                  class="input-code"
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="tel"
+                  maxlength="11"
+                  placeholder="11 位实名手机号"
+                />
+                <p class="field-hint">必须为本人实名认证手机号，用于身份核验与后续服务联系。</p>
+                <p class="field-error" data-field-error="phone"></p>
+              </div>
+              <div class="field">
+                <label for="field-company">企业单位 <span class="required">*</span></label>
+                <input
+                  id="field-company"
+                  name="company"
+                  type="text"
+                  autocomplete="organization"
+                  maxlength="100"
+                  placeholder="如xxx有限公司"
+                />
+                <p class="field-error" data-field-error="company"></p>
+              </div>
+              <div class="field">
+                <label for="field-currentCity">现居城市</label>
+                <input id="field-currentCity" name="currentCity" type="text" maxlength="60" placeholder="如：上海" />
+                <p class="field-error" data-field-error="currentCity"></p>
+              </div>
+              <div class="field">
+                <label for="field-occupation">职业</label>
+                <input id="field-occupation" name="occupation" type="text" maxlength="60" placeholder="如：软件工程师、教师、个体经营" />
+                <p class="field-error" data-field-error="occupation"></p>
+              </div>
+            </div>
+
+            <div class="review-box">
+              <div class="review-box-head">
+                <strong>信息摘要</strong>
+                <span>提交前请再次确认</span>
+              </div>
+              <div class="review-grid">
+                <div>
+                  <span>姓名</span>
+                  <strong id="review-name">待填写</strong>
+                </div>
+                <div>
+                  <span>身份证号</span>
+                  <strong id="review-id">待填写</strong>
+                </div>
+                <div>
+                  <span>证件有效期</span>
+                  <strong id="review-validity">待填写</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="consent-block">
+              <div class="consent-row">
+                <label class="checkbox-label" for="field-consent">
+                  <input id="field-consent" name="consent" type="checkbox" />
+                  <span>我已阅读并同意《个人信息授权与保护说明》，确认所填信息真实、准确。</span>
+                </label>
+                <button type="button" class="text-button consent-link js-open-privacy">查看说明</button>
+              </div>
+              <p class="field-error" data-field-error="consent"></p>
+            </div>
+          </div>
+
+          <input id="field-website" name="website" type="text" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true" />
+
+          <div class="form-actions">
+            <button type="button" class="button button-secondary" id="back-btn" hidden>上一步</button>
+            <div class="form-actions-main">
+              <span class="action-caption" id="action-caption">预计 2 分钟完成</span>
+              <button type="button" class="button button-primary" id="next-btn">
+                <span id="next-label">下一步</span>
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M5 12h13M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <section class="success-view" id="success-view" hidden aria-live="polite">
+          <div class="success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="m5 12.5 4.2 4.2L19 6.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h2>提交成功</h2>
+          <p class="success-copy">信息已安全保存。请保持手机畅通，工作人员将与您联系。</p>
+
+          <div class="receipt-box">
+            <dl class="receipt-list">
+              <div>
+                <dt>回执编号</dt>
+                <dd id="receipt-code">—</dd>
+              </div>
+              <div>
+                <dt>提交时间</dt>
+                <dd id="success-time">—</dd>
+              </div>
+              <div>
+                <dt>姓名</dt>
+                <dd id="success-name">—</dd>
+              </div>
+              <div>
+                <dt>身份证号</dt>
+                <dd id="success-id">—</dd>
+              </div>
+            </dl>
+          </div>
+
+          <p class="success-note">如需更正或撤回已提交的信息，请联系为您服务的保险顾问。</p>
+        </section>
+      </section>
+
+      <p class="page-note">
+        <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M7 10V7a5 5 0 0 1 10 0v3M5.5 10h13v9.5h-13z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M12 13.5v2.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        身份证影像加密存储，仅用于投保相关服务。
+      </p>
+    </main>
+
+    <footer class="site-footer">
+      <div>安笺 · 投保信息服务</div>
+      <div>仅限已获授权的保险咨询与投保用途</div>
+    </footer>
+
+    <dialog class="modal" id="privacy-dialog" aria-labelledby="privacy-title">
+      <div class="modal-header">
+        <h2 id="privacy-title">个人信息授权与保护说明</h2>
+        <button type="button" class="icon-button js-close-privacy" aria-label="关闭">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body prose">
+        <p>在使用信息采集与自动识别服务前，请了解我们如何收集、使用和保护您及被保险人的个人信息。</p>
+        <h3>一、收集范围</h3>
+        <p>姓名、身份证号码、性别、出生日期、民族、籍贯、身份证住址、签发机关、证件有效期、身份证正反面影像、手机号、企业单位、现居城市及职业。</p>
+        <h3>二、使用目的</h3>
+        <p>仅用于保险需求沟通、投保资料准备、身份核验、协助办理投保与后续保单服务。未经您的单独同意，不会将信息用于其他目的。</p>
+        <h3>三、证件信息识别</h3>
+        <p>在您勾选上传前的识别授权后，身份证正反面图片会通过加密连接发送至识别服务，仅用于提取本表所需字段。最终填写内容以您核对后的信息为准。</p>
+        <h3>四、保存与安全</h3>
+        <p>资料通过加密连接传输，身份证影像在服务器中加密存储，仅授权服务人员在办理上述业务所必需的范围内查阅。我们会按照业务所需的最短期限保存资料。</p>
+        <h3>五、对外提供</h3>
+        <p>为完成您所授权的投保服务，可能需要由服务人员将必要资料提交至您选定的保险公司或经授权的合作机构。我们不会出售您的个人信息。</p>
+        <h3>六、您的权利</h3>
+        <p>您有权查询、更正、复制或要求删除个人信息，也可以撤回授权。撤回授权不影响撤回前已经完成的处理。请联系为您服务的保险顾问办理，或要求其转交个人信息保护负责人。</p>
+        <h3>七、重要提示</h3>
+        <p>请确保所提交的信息真实、准确，并由本人或已取得合法授权的主体操作。证件已过期、信息不一致或非本人授权提交，可能影响后续投保服务。</p>
+        <p class="prose-version">授权说明版本 1.1 · 更新于 2026 年 10 月</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button button-primary js-close-privacy">我已了解</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal validity-dialog" id="validity-dialog" aria-labelledby="validity-dialog-title">
+      <div class="modal-header">
+        <h2 id="validity-dialog-title">修改证件有效期</h2>
+        <button type="button" class="icon-button" id="validity-dialog-close" aria-label="关闭">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="field-hint validity-dialog-hint">请对照身份证背面选择日期。证件标注“长期”时，请勾选长期有效。</p>
+        <div class="validity-dialog-grid">
+          <div class="date-field">
+            <label for="validity-start">起始日期</label>
+            <input id="validity-start" type="date" />
+          </div>
+          <div class="date-field" id="validity-end-wrap">
+            <label for="validity-end">到期日期</label>
+            <input id="validity-end" type="date" />
+          </div>
+        </div>
+        <label class="checkbox-label validity-dialog-check" for="validity-long-term">
+          <input id="validity-long-term" type="checkbox" />
+          <span>长期有效</span>
+        </label>
+        <p class="field-error" id="validity-dialog-error"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="button button-secondary" id="validity-dialog-cancel">取消</button>
+        <button type="button" class="button button-primary" id="validity-dialog-save">确认修改</button>
+      </div>
+    </dialog>
+
+    <div class="toast" id="client-toast" role="status" aria-live="polite" hidden></div>
+    <div class="visually-hidden" id="live-region" aria-live="polite"></div>
+  </body>
+</html>

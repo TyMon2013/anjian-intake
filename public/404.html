@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta name="robots" content="noindex" />
+    <title>页面不存在 · 安笺</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <style>
+      .not-found-page {
+        display: grid;
+        place-items: center;
+        min-height: 100dvh;
+        padding: 24px;
+        background: var(--bg);
+      }
+      .not-found-card {
+        width: min(100%, 400px);
+        padding: 32px 28px;
+        text-align: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .not-found-card .brand {
+        justify-content: center;
+        margin-bottom: 24px;
+      }
+      .not-found-code {
+        color: var(--muted);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 12px;
+      }
+      .not-found-card h1 {
+        margin-top: 8px;
+        font-size: 21px;
+        font-weight: 600;
+      }
+      .not-found-card p {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .not-found-card .button {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body class="not-found-page">
+    <main class="not-found-card">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">安</span>
+        <span class="brand-name">安笺</span>
+      </a>
+      <p class="not-found-code">404</p>
+      <h1>页面不存在</h1>
+      <p>您访问的页面不存在或已移动。</p>
+      <a class="button button-primary" href="/">返回信息采集页</a>
+    </main>
+  </body>
+</html>

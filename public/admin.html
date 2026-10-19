@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="安笺投保信息管理端。" />
+    <title>客户档案 · 安笺管理端</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+    <script type="module" src="/js/admin.js"></script>
+  </head>
+  <body class="admin-page">
+    <div class="boot-screen" id="boot-view">
+      <span class="boot-spinner" aria-hidden="true"></span>
+      <p>正在加载</p>
+    </div>
+
+    <section class="login-page" id="login-view" hidden aria-label="管理端登录">
+      <div class="login-container">
+        <a class="brand login-brand" href="/" aria-label="安笺首页">
+          <span class="brand-mark" aria-hidden="true">安</span>
+          <span class="brand-name">安笺</span>
+        </a>
+
+        <div class="login-card">
+          <div class="login-heading">
+            <h1>管理端登录</h1>
+            <p>请输入管理员账号和密码。</p>
+          </div>
+
+          <div class="login-error" id="login-error" role="alert" hidden></div>
+
+          <form id="login-form" class="login-form" novalidate>
+            <div class="form-field">
+              <label for="login-username">管理员账号</label>
+              <input
+                id="login-username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                placeholder="请输入账号"
+                required
+              />
+            </div>
+            <div class="form-field">
+              <label for="login-password">登录密码</label>
+              <div class="password-field">
+                <input
+                  id="login-password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="请输入密码"
+                  required
+                />
+                <button
+                  type="button"
+                  class="password-toggle"
+                  id="password-toggle"
+                  aria-label="显示密码"
+                  aria-pressed="false"
+                >
+                  <svg class="icon eye-open" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                    <circle cx="12" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                  <svg class="icon eye-closed" aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M4 4.5 20 20M9.6 6.2A10.7 10.7 0 0 1 12 6c6.1 0 9.5 6 9.5 6a16 16 0 0 1-3 3.5M6.4 8.1A17 17 0 0 0 2.5 12s3.4 6 9.5 6c1.1 0 2.1-.2 3-.5M9.9 10a2.8 2.8 0 0 0 4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="button button-primary login-submit" id="login-submit">登录</button>
+          </form>
+
+          <p class="login-note">
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M7 10V7a5 5 0 0 1 10 0v3M5.5 10h13v9.5h-13z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M12 13.5v2.8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            仅限授权人员使用，操作将被记录。
+          </p>
+        </div>
+
+        <p class="login-footer">
+          <span>安笺 · 投保资料管理</span>
+          <a href="/">返回信息采集页</a>
+        </p>
+      </div>
+    </section>
+
+    <div class="admin-shell" id="admin-view" hidden>
+      <header class="app-header">
+        <div class="app-header-inner">
+          <a class="brand" href="/admin" aria-label="安笺客户档案">
+            <span class="brand-mark" aria-hidden="true">安</span>
+            <span class="brand-name">安笺</span>
+          </a>
+          <span class="env-label">管理端</span>
+
+          <nav class="app-nav" aria-label="管理导航">
+            <a class="is-active" href="/admin" aria-current="page">
+              客户档案
+              <span class="nav-count" id="nav-count">0</span>
+            </a>
+            <a href="/" target="_blank" rel="noopener">信息采集</a>
+          </nav>
+
+          <div class="header-tools">
+            <span class="header-date" id="today-label">—</span>
+            <span class="header-divider" aria-hidden="true"></span>
+            <span class="header-username" id="admin-username">—</span>
+            <button type="button" class="logout-button" id="logout-button">退出</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="admin-main">
+        <div class="page-header">
+          <div>
+            <h1>客户档案</h1>
+            <p>查看和管理客户投保资料，支持搜索与 Excel 导出。</p>
+          </div>
+          <button type="button" class="button button-primary" id="export-button" disabled>
+            <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 4v11M8 11l4 4 4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>导出筛选结果</span>
+          </button>
+        </div>
+
+        <section class="stats-grid" aria-label="档案概览">
+          <article class="stat-card">
+            <span>全部档案</span>
+            <strong id="stat-total">—</strong>
+          </article>
+          <article class="stat-card">
+            <span>今日新增</span>
+            <strong id="stat-today">—</strong>
+          </article>
+          <article class="stat-card">
+            <span>企业数量</span>
+            <strong id="stat-companies">—</strong>
+          </article>
+        </section>
+
+        <section class="admin-section" aria-labelledby="search-heading">
+          <div class="admin-section-heading">
+            <h2 id="search-heading">搜索与筛选</h2>
+          </div>
+
+          <form class="filter-form" id="filter-form" novalidate>
+            <div class="filter-field filter-field-wide">
+              <label for="filter-query">个人信息</label>
+              <input
+                id="filter-query"
+                name="q"
+                type="search"
+                maxlength="80"
+                placeholder="姓名 / 身份证号 / 手机号 / 回执编号"
+                autocomplete="off"
+              />
+            </div>
+            <div class="filter-field filter-field-wide">
+              <label for="filter-company">企业单位</label>
+              <input
+                id="filter-company"
+                name="company"
+                type="search"
+                maxlength="100"
+                placeholder="如xxx有限公司"
+                autocomplete="off"
+              />
+            </div>
+            <div class="filter-field filter-field-date">
+              <label for="filter-from">起始日期</label>
+              <input id="filter-from" name="from" type="date" />
+            </div>
+            <div class="filter-field filter-field-date">
+              <label for="filter-to">截止日期</label>
+              <input id="filter-to" name="to" type="date" />
+            </div>
+            <div class="filter-actions">
+              <button type="button" class="button button-secondary" id="reset-filters">重置</button>
+              <button type="submit" class="button button-primary" id="search-button">搜索</button>
+            </div>
+          </form>
+
+          <div class="filter-summary" id="filter-summary" hidden>
+            <span id="filter-summary-text"></span>
+            <button type="button" class="text-button" id="clear-search">清除筛选</button>
+          </div>
+        </section>
+
+        <section class="admin-section list-section" aria-labelledby="list-heading">
+          <div class="list-header">
+            <div>
+              <h2 id="list-heading">客户列表</h2>
+              <span class="list-count" id="sheet-count">—</span>
+            </div>
+            <span class="list-note">身份证号已脱敏 · 点击查看完整档案</span>
+          </div>
+          <span class="visually-hidden" id="archive-result" aria-live="polite">正在读取档案</span>
+
+          <div class="data-panel">
+            <div class="list-loading" id="list-loading" hidden aria-label="正在加载档案">
+              <div class="skeleton-row"><span></span><span></span><span></span><span></span></div>
+              <div class="skeleton-row"><span></span><span></span><span></span><span></span></div>
+              <div class="skeleton-row"><span></span><span></span><span></span><span></span></div>
+            </div>
+
+            <div class="table-wrap" id="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">客户</th>
+                    <th scope="col">身份证号</th>
+                    <th scope="col">性别 / 年龄</th>
+                    <th scope="col">籍贯</th>
+                    <th scope="col">企业单位</th>
+                    <th scope="col">提交时间</th>
+                    <th scope="col"><span class="visually-hidden">操作</span></th>
+                  </tr>
+                </thead>
+                <tbody id="records-body"></tbody>
+              </table>
+            </div>
+
+            <div class="record-list" id="record-cards"></div>
+
+            <div class="empty-state" id="empty-state" hidden>
+              <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M5 4.5h10l4 4v11H5zM15 4.5v4h4M8.5 12h7M8.5 15.5h5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <h3>暂无档案</h3>
+              <p id="empty-description">新的客户资料提交后会显示在这里。</p>
+              <button type="button" class="button button-secondary" id="empty-reset" hidden>清除筛选条件</button>
+            </div>
+
+            <div class="pagination" id="pagination" hidden>
+              <span class="pagination-info" id="pagination-info">—</span>
+              <div class="pagination-controls">
+                <button type="button" class="page-button" id="prev-page" aria-label="上一页">上一页</button>
+                <span class="page-number" id="page-number">1 / 1</span>
+                <button type="button" class="page-button" id="next-page" aria-label="下一页">下一页</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="admin-footer">
+        <span>安笺 · 投保资料管理</span>
+        <span>资料仅限授权投保业务使用</span>
+      </footer>
+    </div>
+
+    <div class="drawer-backdrop" id="drawer-backdrop" hidden></div>
+    <aside
+      class="detail-drawer"
+      id="detail-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="detail-title"
+      hidden
+    >
+      <header class="drawer-header">
+        <div>
+          <h2 id="detail-title">客户档案</h2>
+          <p>查看客户信息与证件影像</p>
+        </div>
+        <button type="button" class="icon-button" id="drawer-close" aria-label="关闭档案详情">
+          <svg class="icon" aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </button>
+      </header>
+      <div class="drawer-scroll" id="drawer-scroll">
+        <div class="detail-loading" id="detail-loading">
+          <span class="boot-spinner" aria-hidden="true"></span>
+          <p>正在加载档案</p>
+        </div>
+        <div class="detail-content" id="detail-content" hidden></div>
+      </div>
+    </aside>
+
+    <div class="image-viewer" id="image-viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+      <div class="viewer-toolbar">
+        <strong id="viewer-title">身份证影像</strong>
+        <div class="viewer-actions">
+          <a class="viewer-button" id="viewer-download" href="#" download>下载原图</a>
+          <button type="button" class="viewer-button" id="viewer-close">关闭</button>
+        </div>
+      </div>
+      <div class="viewer-stage">
+        <img id="viewer-image" alt="身份证影像" />
+      </div>
+      <p class="viewer-note">敏感影像，请勿截屏、拍照或转发。</p>
+    </div>
+
+    <dialog class="delete-modal" id="delete-dialog" aria-labelledby="delete-title">
+      <h2 id="delete-title">删除档案</h2>
+      <p>删除后，客户资料和身份证影像将一并移除，且无法恢复。请仅在客户明确要求撤回或依法处理时操作。</p>
+      <p class="delete-target" id="delete-target"></p>
+      <div class="delete-actions">
+        <button type="button" class="button button-secondary" id="delete-cancel">取消</button>
+        <button type="button" class="button button-danger" id="delete-confirm">确认删除</button>
+      </div>
+    </dialog>
+
+    <div class="toast" id="admin-toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
